@@ -3,50 +3,84 @@ const e = require('express')
 const express = require('express')
 const app = express()
 
-let notes = [
+app.use(express.json())
+
+let persons = [
   {
-    id: 1,
-    content: "HTML is easy, give it a try!!",
-    date: "2019-05-30T17:30:31.098Z",
-    important: true
+    "name": "Arto Hellas",
+    "number": "546- 765534",
+    "userId": 1,
+    "id": 1
   },
   {
-    id: 2,
-    content: "Browser can execute only Javascript",
-    date: "2019-05-30T18:39:34.091Z",
-    important: false
+    "name": "Ada Lovelace",
+    "number": "896-563222",
+    "userId": 1,
+    "id": 2
   },
   {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    date: "2019-05-30T19:20:14.298Z",
-    important: true
+    "name": "Dan Abramov",
+    "number": "12-43-234345",
+    "userId": 1,
+    "id": 3
+  },
+  {
+    "name": "Alan Turing",
+    "number": "41-32- 486346",
+    "userId": 1,
+    "id": 4
+  },
+  {
+    "name": "Charles Bowl",
+    "number": "321-486346",
+    "userId": 1,
+    "id": 5
   }
 ]
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World </h1>')
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
 })
 
-app.get('/api/notes', (request, response) => {
-  response.json(notes)
+app.get('/info', (request, response) => {
+  var dat= new Date()
+  response.send(`<p>Phonebook has info for ${persons.length} people</p> <p>${dat}</p>`)
 })
 
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const note = notes.find(note => note.id === id)
+  const person = persons.find(person => person.id === id)
 
-  if (note) {
-    response.json(note)
+  if (person) {
+    console.log(person)
+    response.json(person)
   }
 
   response.status(404).end()
 })
 
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
-  response.status(404).end()
+  persons = persons.filter(person => person.id !== id)
+  response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+  const person = request.body
+
+  const ids = persons.map(person => person.id)
+  const maxId = Math.max(...ids)
+
+  const newPerson = {
+    id: maxId + 1,
+    name: person.name,
+    number: person.number,
+    userId: 1
+  }
+
+  persons = [...persons, newPerson]
+
+  response.json(newPerson)
 })
 
 const PORT = 3001
