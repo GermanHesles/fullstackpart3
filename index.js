@@ -1,40 +1,47 @@
+const cors = require('cors')
 const { request, response } = require('express')
 const e = require('express')
 const express = require('express')
 const app = express()
+const logger = require('./loggerMiddleware')
+
 
 app.use(express.json())
 
+app.use(logger)
+
+app.use(cors())
+
 let persons = [
   {
-    "name": "Arto Hellas",
-    "number": "546- 765534",
-    "userId": 1,
-    "id": 1
+    'name': 'Arto Hellas',
+    'number': '546- 765534',
+    'userId': 1,
+    'id': 1
   },
   {
-    "name": "Ada Lovelace",
-    "number": "896-563222",
-    "userId": 1,
-    "id": 2
+    'name': 'Ada Lovelace',
+    'number': '896-563222',
+    'userId': 1,
+    'id': 2
   },
   {
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-    "userId": 1,
-    "id": 3
+    'name': 'Dan Abramov',
+    'number': '12-43-234345',
+    'userId': 1,
+    'id': 3
   },
   {
-    "name": "Alan Turing",
-    "number": "41-32- 486346",
-    "userId": 1,
-    "id": 4
+    'name': 'Alan Turing',
+    'number': '41-32- 486346',
+    'userId': 1,
+    'id': 4
   },
   {
-    "name": "Charles Bowl",
-    "number": "321-486346",
-    "userId": 1,
-    "id": 5
+    'name': 'John Dee',
+    'number': '321-486346',
+    'userId': 1,
+    'id': 5
   }
 ]
 
@@ -52,7 +59,6 @@ app.get('/api/persons/:id', (request, response) => {
   const person = persons.find(person => person.id === id)
 
   if (person) {
-    console.log(person)
     response.json(person)
   }
 
@@ -68,6 +74,22 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
   const person = request.body
 
+  if (!person.name || !person.number) {
+    return response.status(400).json({
+      error: 'The name or number is missing'
+    })
+  }
+
+  const personExists = persons.some(
+    existingPerson => existingPerson.name === person.name
+  )
+
+  if (personExists) {
+    return response.status(400).json({
+      error: 'Name must be unique'
+    })
+  }
+
   const ids = persons.map(person => person.id)
   const maxId = Math.max(...ids)
 
@@ -80,10 +102,16 @@ app.post('/api/persons', (request, response) => {
 
   persons = [...persons, newPerson]
 
-  response.json(newPerson)
+  response.status(201).json(newPerson)
 })
 
-const PORT = 3001
+app.use((request, response) => {
+  response.status(404).json({
+    error: 'Not found'
+  })
+})
+
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
