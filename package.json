@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deploy": "git push heroku main",
     "dev": "nodemon index.js",
     "lint": "eslint .",
     "start": "node index.js",

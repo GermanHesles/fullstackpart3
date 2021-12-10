@@ -4,7 +4,15 @@ const e = require('express')
 const express = require('express')
 const app = express()
 const logger = require('./loggerMiddleware')
+// const axios = require('axios')
+const baseUrl = '/api/notes'
 
+// const getAll = () => {
+//   const request = axios.get(baseUrl)
+//   return request.then(response => response.data)
+// }
+
+app.use(express.static('build'))
 
 app.use(express.json())
 
