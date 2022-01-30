@@ -4,13 +4,7 @@ const e = require('express')
 const express = require('express')
 const app = express()
 const logger = require('./loggerMiddleware')
-// const axios = require('axios')
 const baseUrl = '/api/notes'
-
-// const getAll = () => {
-//   const request = axios.get(baseUrl)
-//   return request.then(response => response.data)
-// }
 
 app.use(express.static('build'))
 
@@ -83,7 +77,7 @@ app.post('/api/persons', (request, response) => {
   const person = request.body
 
   if (!person.name || !person.number) {
-    return response.status(400).json({
+    return response.status(422).json({
       error: 'The name or number is missing'
     })
   }
@@ -93,8 +87,9 @@ app.post('/api/persons', (request, response) => {
   )
 
   if (personExists) {
-    return response.status(400).json({
-      error: 'Name must be unique'
+    return response.status(409).json({
+      error: 'Name must be unique',
+      person: personExists
     })
   }
 
@@ -111,6 +106,24 @@ app.post('/api/persons', (request, response) => {
   persons = [...persons, newPerson]
 
   response.status(201).json(newPerson)
+})
+
+app.put('/api/persons/:id', (request, response) => {
+  const updatedPerson = request.body
+  const id = Number(request.params.id)
+  const updatedPersons = [];
+
+  persons.forEach((person, i) => {
+    updatedPersons[i] = person;
+
+    if (person.id === id) {
+      updatedPersons[i] = {...person, ...updatedPerson};
+    }
+  })
+
+  persons = updatedPersons
+
+  response.status(201)
 })
 
 app.use((request, response) => {
