@@ -1,10 +1,7 @@
 const cors = require('cors')
-const { request, response } = require('express')
-const e = require('express')
 const express = require('express')
 const app = express()
 const logger = require('./loggerMiddleware')
-const baseUrl = '/api/notes'
 
 app.use(express.static('build'))
 
