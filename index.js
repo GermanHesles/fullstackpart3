@@ -7,7 +7,7 @@ const Tracing = require('@sentry/tracing')
 const logger = require('./middleware/loggerMiddleware')
 const Person = require('./models/Person')
 const notFound = require('./middleware/notFound')
-const handleError = require('./middleware/handleError')
+const errorHandler = require('./middleware/errorHandler')
 
 const app = express()
 
@@ -45,7 +45,7 @@ app.get('/info', (request, response) => {
   })
 })
 
-app.get('/api/persons/:id', (request, response, next) => {
+app.get('/api/persons/:id', (request, response) => {
   const { id } = request.params
 
   Person.findById(id).then(person => {
@@ -54,7 +54,7 @@ app.get('/api/persons/:id', (request, response, next) => {
     }
 
     response.status(404).end()
-  }).catch(error => next(error))
+  }).catch(error => (error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -67,25 +67,8 @@ app.delete('/api/persons/:id', (request, response, next) => {
   response.status(204).end()
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const person = request.body
-
-  if (!person.name || !person.number) {
-    return response.status(422).json({
-      error: 'The name or number is missing'
-    })
-  }
-
-  /*   const personExists = persons.some(
-    existingPerson => existingPerson.name === person.name
-  )
-
-  if (personExists) {
-    return response.status(409).json({
-      error: 'Name must be unique',
-      person: personExists
-    })
-  } */
 
   const newPerson = new Person({
     name: person.name,
@@ -94,7 +77,8 @@ app.post('/api/persons', (request, response) => {
 
   newPerson.save().then(savedPerson => {
     response.json(savedPerson)
-  })
+  }).catch(error => next(error))
+
   response.status(201).json(newPerson)
 })
 
@@ -113,7 +97,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 })
 
 app.use(Sentry.Handlers.errorHandler())
-app.use(handleError)
+app.use(errorHandler)
 app.use(notFound)
 
 const PORT = process.env.PORT

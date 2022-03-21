@@ -6,5 +6,9 @@ module.exports = (error, request, response, next) => {
     return
   }
 
+  if (error.name === 'ValidationError') {
+    return response.status(422).json({ error: error.message })
+  }
+
   response.status(500).end()
 }
