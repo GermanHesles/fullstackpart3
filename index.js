@@ -63,8 +63,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(id).then(result => {
     response.status(204).end()
   }).catch(error => next(error))
-
-  response.status(204).end()
 })
 
 app.post('/api/persons', (request, response, next) => {
@@ -76,10 +74,8 @@ app.post('/api/persons', (request, response, next) => {
   })
 
   newPerson.save().then(savedPerson => {
-    response.json(savedPerson)
+    response.status(201).json(savedPerson)
   }).catch(error => next(error))
-
-  response.status(201).json(newPerson)
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
