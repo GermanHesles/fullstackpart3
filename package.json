@@ -6,9 +6,9 @@
   "scripts": {
     "deploy": "git push heroku master",
     "dev": "nodemon index.js",
-    "lint": "eslint .",
+    "lint": "npm run lint",
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose",
     "logs:prod": "heroku logs --tail"
   },
   "keywords": [],
@@ -20,12 +20,13 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "6.0.0",
     "eslint-plugin-react": "7.29.4",
+    "jest": "27.5.1",
     "nodemon": "2.0.15",
     "standard": "16.0.4"
   },
   "dependencies": {
-    "@sentry/node": "^6.18.2",
-    "@sentry/tracing": "^6.18.2",
+    "@sentry/node": "6.18.2",
+    "@sentry/tracing": "6.18.2",
     "cors": "2.8.5",
     "dotenv": "16.0.0",
     "express": "4.17.1",
@@ -33,6 +34,12 @@
     "mongoose-unique-validator": "^3.0.0"
   },
   "eslintConfig": {
-    "extends": "./node_modules/standard/eslintrc.json"
+    "extends": "./node_modules/standard/eslintrc.json",
+    "env": {
+      "jest": true
+    }
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
