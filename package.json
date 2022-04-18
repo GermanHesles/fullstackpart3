@@ -8,7 +8,8 @@
     "dev": "NODE_ENV=development nodemon index.js",
     "lint": "npm run lint",
     "start": "NODE_ENV=production node index.js",
-    "test": "NODE_ENV=test jest --verbose",
+    "test": "NODE_ENV=test jest --verbose --silent tests/persons.test.js",
+    "test:watch": "npm run test -- --watch",
     "logs:prod": "heroku logs --tail"
   },
   "keywords": [],
@@ -22,7 +23,8 @@
     "eslint-plugin-react": "7.29.4",
     "jest": "27.5.1",
     "nodemon": "2.0.15",
-    "standard": "16.0.4"
+    "standard": "16.0.4",
+    "supertest": "^6.2.2"
   },
   "dependencies": {
     "@sentry/node": "6.18.2",
