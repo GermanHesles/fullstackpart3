@@ -1,3 +1,8 @@
+const { app } = require('../index')
+const supertest = require('supertest')
+
+const api = supertest(app)
+
 const initialPersons = [
   {
     name: 'James Bowlss',
@@ -9,6 +14,22 @@ const initialPersons = [
   }
 ]
 
+const getAllPersons = async () => {
+  const response = await api.get('/api/persons')
+  return {
+    names: response.body.map(person => person.name),
+    response
+  }
+}
+
+const getPersonById = async (id) => {
+  const response = await api.get(`api/persons/${id}`)
+  return response
+}
+
 module.exports = {
-  initialPersons
+  getAllPersons,
+  api,
+  initialPersons,
+  getPersonById
 }
