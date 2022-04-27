@@ -7,14 +7,10 @@ const { api, initialPersons, getAllPersons, getPersonById } = require('./test_he
 beforeEach(async () => {
   await Person.deleteMany({})
 
-  /*   const personsObjects = initialPersons.map(person => new Person(person))
-  const promises = personsObjects.map(person => person.save()) */
-
-  const person1 = new Person(initialPersons[0])
-  await person1.save()
-
-  const person2 = new Person(initialPersons[1])
-  await person2.save()
+  for (const person of initialPersons) {
+    const personObject = new Person(person)
+    await personObject.save()
+  }
 })
 
 test('persons are returned as json', async () => {
@@ -69,21 +65,6 @@ test('a person without name or number can not be added', async () => {
   expect(response.body).toHaveLength(initialPersons.length)
 })
 
-test('a person can be deleted', async () => {
-  const { response: firstResponse } = await getAllPersons()
-  const { body: persons } = firstResponse
-  const personToDelete = persons[0]
-
-  await api
-    .delete(`/api/persons/${personToDelete.id}`)
-    .expect(200)
-
-  const { names, response: secondResponse } = await getAllPersons()
-
-  expect(secondResponse.body).toHaveLength(initialPersons.length - 1)
-  expect(names).not.toContain(personToDelete.name)
-})
-
 test('a person can be update', async () => {
   const { response: allPersonsResponse } = await getAllPersons()
 
@@ -103,6 +84,21 @@ test('a person can be update', async () => {
 
   // expect(response).toHaveLength(initialPersons.length)
   // expect(names).toContain('James Bowlss')
+})
+
+test('a person can be deleted', async () => {
+  const { response: firstResponse } = await getAllPersons()
+  const { body: persons } = firstResponse
+  const personToDelete = persons[0]
+
+  await api
+    .delete(`/api/persons/${personToDelete.id}`)
+    .expect(200)
+
+  const { names, response: secondResponse } = await getAllPersons()
+
+  expect(secondResponse.body).toHaveLength(initialPersons.length - 1)
+  expect(names).not.toContain(personToDelete.name)
 })
 
 afterAll(() => {
