@@ -23,7 +23,7 @@ const getAllPersons = async () => {
 }
 
 const getPersonById = async (id) => {
-  const response = await api.get(`api/persons/${id}`)
+  const response = await api.get(`/api/persons/${id}`)
   return response.body
 }
 

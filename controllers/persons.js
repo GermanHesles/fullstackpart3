@@ -58,17 +58,16 @@ personsRouter.post('/', async (request, response, next) => {
 })
 
 personsRouter.put('/:id', async (request, response, next) => {
-  // const { id } = request.params
+  const { id } = request.params
   const person = request.body
 
   const updatedPerson = {
     name: person.name,
     number: person.number
   }
-  response.json(updatedPerson).end()
 
-  // const updatePerson = await Person.findByIdAndUpdate(id, updatedPerson, { new: true })
-  // response.json(updatePerson).end()
+  const updatePerson = await Person.findByIdAndUpdate(id, updatedPerson, { new: true })
+  response.json(updatePerson).end()
 })
 
 module.exports = personsRouter
