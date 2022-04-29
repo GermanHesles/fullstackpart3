@@ -74,6 +74,7 @@ test('a person can be update', async () => {
     name: 'James Bowlss',
     number: '876455-433'
   }
+
   await api
     .put(`/api/persons/${personToUpdate.id}`)
     .send(newDataPerson)
@@ -82,8 +83,7 @@ test('a person can be update', async () => {
 
   const updatedPerson = await getPersonById(personToUpdate.id)
 
-  // expect(response).toHaveLength(initialPersons.length)
-  // expect(names).toContain('James Bowlss')
+  expect(updatedPerson.name).toContain('James Bowlss')
 })
 
 test('a person can be deleted', async () => {

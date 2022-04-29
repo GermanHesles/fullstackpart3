@@ -24,7 +24,7 @@ const getAllPersons = async () => {
 
 const getPersonById = async (id) => {
   const response = await api.get(`api/persons/${id}`)
-  return response
+  return response.body
 }
 
 module.exports = {
