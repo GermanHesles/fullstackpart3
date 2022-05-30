@@ -22,7 +22,7 @@ test('persons are returned as json', async () => {
 
 test('there are two persons', async () => {
   const response = await api.get('/api/persons')
-  expect(response.body).toHaveLength(initialPersons.length)
+  expect(response.body).toHaveLength(2)
 })
 
 test('the first person name is James Bowlss', async () => {

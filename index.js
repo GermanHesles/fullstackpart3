@@ -8,6 +8,7 @@ const logger = require('./middleware/loggerMiddleware')
 const notFound = require('./middleware/notFound')
 const errorHandler = require('./middleware/errorHandler')
 const personsRouter = require('./controllers/persons')
+const usersRouter = require('./controllers/users')
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.use(express.json())
 app.use(logger)
 app.use(cors())
 app.use('/api/persons', personsRouter)
+app.use('/api/users', usersRouter)
 
 app.get('/debug-sentry', function mainHandler (req, res) {
   throw new Error('My first Sentry error!')

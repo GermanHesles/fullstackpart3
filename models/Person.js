@@ -13,6 +13,10 @@ const personSchema = new Schema({
     minlength: 8,
     required: true,
     unique: true
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }
 }, { collection: 'persons' })
 
