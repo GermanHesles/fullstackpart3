@@ -2,6 +2,7 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "name": "John Deele",
-    "number": "090-43"
+	"name": "async/await",
+	"number": "606-5435443",
+	"userId": "123456"
 }

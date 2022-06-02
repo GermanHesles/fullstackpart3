@@ -34,7 +34,8 @@ test('the first person name is James Bowlss', async () => {
 test('a valid person can be added', async () => {
   const newPerson = {
     name: 'async/await',
-    number: '606-5435443'
+    number: '606-5435443',
+    userId: '56cb91bdc3464f14678934ca'
   }
 
   await api
