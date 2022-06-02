@@ -9,7 +9,10 @@ personsRouter.get('/info', async (request, response) => {
 })
 
 personsRouter.get('/', async (request, response) => {
-  const persons = await Person.find({})
+  const persons = await Person.find({}).populate('user', {
+    username: 1,
+    name: 1
+  })
   response.json(persons)
 })
 
