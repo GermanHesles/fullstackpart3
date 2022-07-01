@@ -1,6 +1,7 @@
 const personsRouter = require('express').Router()
 const Person = require('../models/Person')
 const User = require('../models/User')
+const userExtractor = require('../middleware/userExtractor')
 
 personsRouter.get('/info', async (request, response) => {
   const date = new Date()
@@ -30,7 +31,7 @@ personsRouter.get('/:id', async (request, response, next) => {
   }
 })
 
-personsRouter.delete('/:id', async (request, response, next) => {
+personsRouter.delete('/:id', userExtractor, async (request, response, next) => {
   const { id } = request.params
 
   try {
@@ -41,11 +42,12 @@ personsRouter.delete('/:id', async (request, response, next) => {
   }
 })
 
-personsRouter.post('/', async (request, response, next) => {
-  const { name, number, userId } = request.body
+personsRouter.post('/', userExtractor, async (request, response, next) => {
+  const { name, number } = request.body
+
+  const { userId } = request
 
   const user = await User.findById(userId)
-  console.log(user)
 
   const newPerson = new Person({
     name,
@@ -65,7 +67,7 @@ personsRouter.post('/', async (request, response, next) => {
   }
 })
 
-personsRouter.put('/:id', async (request, response) => {
+personsRouter.put('/:id', userExtractor, async (request, response) => {
   const { id } = request.params
   const person = request.body
 

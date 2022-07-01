@@ -14,18 +14,35 @@ usersRouter.post('/', async (request, response) => {
   const { body } = request
   const { username, name, password } = body
 
+  if (!username || !password) {
+    return response.status(400).json({
+      error: 'requeride "content" fied is missing'
+    })
+  }
+
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  const user = new User({
+  const newUser = new User({
     username,
     name,
     passwordHash
   })
 
-  const savedUser = await user.save()
+  try {
+    const savedUser = await newUser.save()
 
-  response.status(201).json(savedUser)
+    response.status(201).json(savedUser)
+  } catch (error) {
+    response.status(400).json(error)
+  }
+})
+
+usersRouter.delete('/:id', async (request, response) => {
+  const { id } = request.params
+
+  await User.findByIdAndDelete(id)
+  response.status(200).end()
 })
 
 module.exports = usersRouter

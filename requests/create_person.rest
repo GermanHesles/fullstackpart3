@@ -1,8 +1,8 @@
 POST http://localhost:3001/api/persons
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYmVlM2YxNmY5OGNhMWNlNDc1MTgyYyIsInVzZXJuYW1lIjoicGVyZHVyYWJvMiIsImlhdCI6MTY1NjY3NzM3MywiZXhwIjoxNjU3MjgyMTczfQ.smUcPcukZRy0HnkyQNooqiIFaBILplWgRgSo1fq0WT0
 
 {
-	"name": "async/await",
-	"number": "606-5435443",
-	"userId": "123456"
+	"name": "John Dee",
+	"number": "606-5435443"
 }

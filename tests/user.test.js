@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const { server } = require('../index')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
-const { api, getUsers } = require('./test_helper')
+const { api, getUsers } = require('./helpers')
 
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
